@@ -1,31 +1,38 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Întrebări și Răspunsuri MPU - Hincu (Revizuit)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
+            }
+        }
+    </script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        // Set Inter as the default font
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        // Define a custom color palette
                         'primary': {
-                            light: '#60a5fa', // Lighter blue
-                            DEFAULT: '#2563eb', // Primary blue
-                            dark: '#1e40af', // Darker blue
+                            light: '#60a5fa',
+                            DEFAULT: '#2563eb',
+                            dark: '#1e40af',
                         },
-                        'secondary': '#facc15', // Yellow accent
+                        'secondary': '#facc15',
                         'neutral': {
-                            light: '#f8fafc', // Very light gray
-                            DEFAULT: '#e2e8f0', // Light gray
-                            dark: '#64748b', // Medium gray
-                            darker: '#334155' // Dark gray
+                            light: '#f8fafc',
+                            DEFAULT: '#e2e8f0',
+                            dark: '#64748b',
+                            darker: '#334155',
+                            darkest: '#1e293b'
                         }
                     }
                 }
@@ -36,43 +43,93 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style type="text/tailwindcss">
-        /* Apply base styles */
+        /* Basis-Stile */
         body {
-            @apply font-sans bg-neutral-light text-neutral-darker leading-relaxed;
+            @apply font-sans text-neutral-darker leading-relaxed transition-colors duration-300;
+            @apply bg-no-repeat bg-cover bg-center bg-fixed;
+            background-image: linear-gradient(rgba(248, 250, 252, 0.9), rgba(248, 250, 252, 0.9)), url('https://i.imgur.com/QXc82K9.png'); /* [Bild von Abstrakter Hintergrund] */
+            /* Padding oben hinzufügen, um Platz für das Logo zu schaffen */
+            @apply pt-28 sm:pt-36;
         }
-        /* Style for the main container */
+
+        /* Dark Mode Stile für den Body */
+        .dark body {
+            @apply text-neutral-light;
+            background-image: linear-gradient(rgba(30, 41, 59, 0.95), rgba(30, 41, 59, 0.95)), url('https://i.imgur.com/QXc82K9.png'); /* [Bild von Abstrakter Hintergrund] */
+        }
+
+        /* Container Stile (Light & Dark) */
         .container {
-            @apply max-w-4xl mx-auto my-8 p-6 sm:p-10 bg-white rounded-xl shadow-lg;
+            @apply max-w-4xl mx-auto my-8 mb-16 p-6 sm:p-10 rounded-xl shadow-lg transition-colors duration-300;
+            @apply bg-white border border-neutral; /* Light Mode */
+            @apply dark:bg-neutral-darker dark:border-neutral-dark; /* Dark Mode */
         }
-        /* Style for the main heading */
+
+        /* Überschrift Stile (Light & Dark) */
         h1 {
-            @apply text-3xl sm:text-4xl font-bold text-center text-primary-dark mb-8 pb-4 border-b border-neutral;
+            @apply text-3xl sm:text-4xl font-bold text-center mb-8 pb-4 border-b transition-colors duration-300;
+            @apply text-primary-dark border-neutral; /* Light Mode */
+            @apply dark:text-primary-light dark:border-neutral-dark; /* Dark Mode */
         }
-        /* Style for each question-answer block */
+
+        /* Frage-Antwort Block Stile (Light & Dark) */
         .qa-block {
-            @apply bg-white mb-6 rounded-lg border border-neutral overflow-hidden shadow-md transition-shadow duration-300 hover:shadow-xl;
+             @apply mb-6 rounded-lg border overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl;
+             @apply bg-white border-neutral; /* Light Mode */
+             @apply dark:bg-neutral-dark dark:border-neutral-dark dark:shadow-neutral-darkest/50 dark:hover:shadow-neutral-darkest/70; /* Dark Mode */
         }
-        /* Style for the question header */
+
+        /* Frage Header Stile (Light & Dark) */
         .question {
-            /* Use a gradient for a more colorful look */
-            @apply bg-gradient-to-r from-primary to-primary-light text-white p-4 sm:p-5 font-semibold text-lg rounded-t-lg;
-            /* No margin needed as it's part of the block */
+            @apply text-white p-4 sm:p-5 font-semibold text-lg rounded-t-lg transition-colors duration-300;
+            @apply bg-gradient-to-r from-primary to-primary-light; /* Light Mode */
+            @apply dark:bg-primary-dark; /* Dark Mode */
         }
-        /* Style for the answer section */
+
+        /* Antwort Sektion Stile (Light & Dark) */
         .answer {
-            @apply p-4 sm:p-5 bg-white text-neutral-darker text-base;
-            /* No margin needed */
+            @apply p-4 sm:p-5 text-base transition-colors duration-300;
+            @apply bg-white text-neutral-darker; /* Light Mode */
+            @apply dark:bg-neutral-dark dark:text-neutral-light; /* Dark Mode */
         }
-        /* Style for lists within answers */
+
+        /* Listen Stile (Light & Dark) */
         .answer ul {
             @apply list-disc pl-6 mt-3 space-y-2;
+            @apply dark:text-neutral-light;
         }
         .answer li {
-             @apply mb-1; /* Consistent spacing for list items */
+             @apply mb-1;
+        }
+
+        /* Dark Mode Umschaltknopf Stile */
+        #theme-toggle {
+            @apply fixed bottom-4 right-4 z-50 px-3 py-2 rounded-lg shadow-md transition-all duration-300 text-sm font-medium;
+            @apply bg-primary text-white hover:bg-primary-dark;
+            @apply dark:bg-secondary dark:text-neutral-darkest dark:hover:bg-yellow-300;
+        }
+
+        /* Logo Container Stile */
+        #logo-container {
+            @apply absolute top-4 left-4 z-10 w-24 h-24 sm:w-32 sm:h-32; /* Position und Größe */
+            /* Sicherstellen, dass Klicks zum Canvas durchgehen */
+            pointer-events: none; /* Container ignoriert Klicks */
+        }
+        #logo-canvas {
+            @apply w-full h-full block cursor-pointer; /* Canvas füllt Container, Klick-Cursor */
+             pointer-events: auto; /* Canvas fängt Klicks wieder auf */
         }
     </style>
 </head>
-<body class="bg-neutral-light">
+<body>
+
+    <div id="logo-container">
+        <canvas id="logo-canvas"></canvas>
+    </div>
+
+    <button id="theme-toggle" type="button" title="Modus wechseln">
+        Modus laden...
+    </button>
 
     <div class="container">
         <h1>Întrebări și Răspunsuri MPU (Examen Hincu)</h1>
@@ -83,21 +140,18 @@
                 Veneam de la muncă. Lucram atunci la o firmă de muncă temporară și eram trimis prin toată Germania dintr-un loc în altul și locuiam mereu la hotel. (La întrebare suplimentară?) 'În ziua aceea, un coleg a avut ziua de naștere și am început să bem alcool după-amiaza, de la ora 17. Pe la miezul nopții am coborât să cumpărăm țigări. Dar nu am găsit automatul de țigări și atunci am decis să merg la benzinărie, care era la aproximativ un kilometru distanță, iar când m-am întors de la benzinărie, am fost oprit de poliție.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Cantitatea estimată de alcool consumată înainte de cursă?</h2>
             <div class="answer">
                 Am băut zece beri la jumătate de litru și două șnapsuri duble.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Ce efect ați simțit de la cantitatea de alcool consumată?</h2>
             <div class="answer">
                 Încă mă simțeam bine și capabil să conduc.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Motivele pentru cantitatea mare de alcool consumată în ziua cursei sub influența alcoolului?</h2>
             <div class="answer">
@@ -108,84 +162,72 @@
                 </ul>
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Despre comportamentul de consum înainte de ultima cursă sub influența alcoolului documentată?</h2>
             <div class="answer">
                 De la 20 la 29 de ani am băut și în România, cam de patru până la cinci ori pe lună și mai ales în weekend (...) erau atunci trei până la patru beri la jumătate de litru și se întâmpla și să beau mai mult. Când am venit în Germania în 2014, a devenit masiv mai mult (...) atunci am început să beau regulat și cantitatea a crescut continuu. Atunci beam săptămânal cel puțin de trei până la patru ori alcool (...) adică miercuri și joi trei până la patru beri, vineri deja șase până la opt beri și sâmbătă deja până la douăsprezece beri la jumătate de litru. (La întrebare suplimentară?) 'Asta a durat aproximativ un an până la cursa sub influența alcoolului.' (La întrebare suplimentară?) 'Cantitățile au crescut treptat din ce în ce mai mult.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Care au fost motivele pentru consumul crescut de alcool de atunci?</h2>
             <div class="answer">
                 Când am venit în Germania, aveam foarte mult stres de la muncă. Eram la o firmă de muncă temporară și eram mereu detașat la alte firme. Nu înțelegeam limba, nu știam exact unde trebuie să merg mereu și pentru cât timp. Soția mea era atunci însărcinată în România. Mă simțeam atunci puțin mai bine când beam alcool, mă simțeam mai sigur cu alcool și credeam că îmi reduce stresul. (La întrebare suplimentară?) 'Eram constant cazați în hoteluri și acolo erau și colegii, care beau și ei toți. La trei luni după incident, a venit și soția mea în Germania și ne-am mutat într-un apartament propriu și am fost preluat definitiv de o firmă. Lucrez și astăzi în această firmă.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Care este comportamentul actual de consum de alcool de la incident?</h2>
             <div class="answer">
                 După cursa sub influența alcoolului am continuat să beau în aceleași cantități ca înainte, pentru că nu știam ce să fac altceva (...) asta a durat până când soția mea a venit în Germania trei luni mai târziu. Atunci am redus drastic consumul de alcool (...) eram la una sau două beri pe lună. Punctul de cotitură în gândirea mea a fost în 2023, când socrul meu a murit de ciroză hepatică. Nu am mai băut din 15.07.23.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Evenimentul declanșator pentru a renunța la alcool?</h2>
             <div class="answer">
                 Am înțeles că alcoolul nu îmi face bine. Moartea socrului meu mi-a deschis ochii. Nu eram la fel de concentrat la muncă când beam alcool. Am vorbit apoi și cu soția mea despre asta și nu vreau să devin alcoolic sau copilul meu să crească cu un tată alcoolic.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Durata intenționată a renunțării actuale la alcool?</h2>
             <div class="answer">
                 Nu mai vreau să beau alcool deloc.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">De ce v-ați decis pentru o renunțare completă la alcool în sensul unei abstinențe durabile?</h2>
             <div class="answer">
                 Am realizat că alcoolul nu mi-a făcut bine. Vreau să trăiesc abstinent. (La clarificări?) 'Nu vreau să devin dependent de alcool.' (La clarificări?) 'Am avut o problemă cu alcoolul, am băut foarte exagerat. Dacă beau din nou alcool, atunci va fi din nou mai mult. Mi-e teamă că nu pot controla alcoolul și că voi bea din nou la fel de mult ca înainte. Nu vreau să ajung din nou acolo unde am fost. Duc o viață mulțumită și fericită și nu vreau să mai renunț la asta. Mi s-au clarificat multe de când nu mai beau alcool, am familia mea aici și am cumpărat o casă. Acum sunt multe în joc.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Ce experiențe ați acumulat între timp cu schimbarea de comportament realizată?</h2>
             <div class="answer">
                 Am hobby-uri noi de când nu mai beau alcool. Nu îmi mai petrec timpul cu prietenii mei (de pahar), ci cu băiatul meu și mă pot ocupa bine de el. Fac multe lucruri în weekend cu familia mea și asta este frumos pentru mine. (La întrebare suplimentară?) 'Când sunt la petreceri, spun clar că am o problemă cu alcoolul și nu beau alcool. Pot vorbi deschis despre asta astăzi. Nu merg nici la petreceri unde știu că se bea mult alcool, însă astăzi nu mai am nicio problemă să ciocnesc cu apă sau suc.' (La întrebare suplimentară?) 'Unii au fost supărați că nu mai beau și atunci am întrerupt și contactul. Astăzi sunt mult cu alte familii care nu beau deloc alcool. Evit oamenii care beau mult alcool.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Autoevaluarea actuală a celorlalte incidente/probleme documentate?</h2>
             <div class="answer">
                 Atunci m-am gândit doar la mine. M-am gândit doar la avantajul meu și am condus. Nu m-am gândit că aș putea răni pe cineva sau aș putea provoca un accident. Am crezut că pot evita să fiu oprit de poliție. (La clarificări?) 'Așa este, am fost prins mai des.' (La întrebare suplimentară?) 'Cum am spus, eram un egoist și m-am uitat doar la avantajul meu. Astăzi îmi pare foarte rău. Văzut din perspectiva mea de astăzi, am făcut greșeli foarte mari (...) aș fi putut ajunge și la închisoare.' (La întrebare suplimentară?) 'Am condus tot timpul atunci (fără permis).'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Autoevaluarea modului în care s-a putut ajunge la o asemenea acumulare de încălcări?</h2>
             <div class="answer">
-                Aveam mult stres la muncă. Nu i-am spus șefului că nu mai am permis de conducere. Soția mea nu lucra și, cum am spus, nu am spus nimănui că nu mai am permis de conducere. (La întrebare suplimentară?) 'Mi-a fost teamă de consecințe, că îmi voi pierde locul de muncă. Știam că este ilegal și, de asemenea, că este periculos. Mi-a fost teamă să-mi pierd locul de muncă și de aceea am încălcat legile. Astăzi regret foarte mult că am făcut asta. Eram pur și simplu egoist și mi-am văzut doar interesele.'
+                Aveam mult stres la muncă. Nu i-am spus șefului că nu mai am permis de conducere. Soția mea nu lucra și, cum am spus, nu am spus nimănui că nu mai am permis de conducere. (La întrebare suplimentară?) 'Mi-a fost teamă de consecințe, că îmi voi perde locul de muncă. Știam că este ilegal și, de asemenea, că este periculos. Mi-a fost teamă să-mi pierd locul de muncă și de aceea am încălcat legile. Astăzi regret foarte mult că am făcut asta. Eram pur și simplu egoist și mi-am văzut doar interesele.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Schimbarea de atitudine și comportament?</h2>
             <div class="answer">
                 Nu m-am mai urcat la volan din 2021, de când judecătorul mi-a spus că dacă mai conduc o dată fără permis, voi ajunge la închisoare. (La întrebare suplimentară?) 'Multe s-au schimbat în bine. Acum pot dormi bine. I-am spus șefului meu că nu mai am permis de conducere. Acum sunt sincer.' (La întrebare suplimentară?) 'Am în continuare același loc de muncă, sunt șef de echipă pe șantiere și am un grup sub mine ca maistru. Acum totul este de fapt mai bine și mai frumos. Sunt concentrat la muncă și nu mai am probleme.'
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Cum își evaluează el însuși, din perspectiva de astăzi, comportamentul său anterior de consum de alcool - consum normal de alcool, abuz de alcool, dependență de alcool?</h2>
             <div class="answer">
                 Am băut mult alcool.
             </div>
         </div>
-
         <div class="qa-block">
             <h2 class="question">Ce altceva mai rezultă din raport?</h2>
             <div class="answer">
@@ -204,6 +246,246 @@
                 </ul>
             </div>
         </div>
+        </div> <script>
+        // JavaScript für den Dark Mode Umschalter (unverändert)
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                htmlElement.classList.add('dark');
+                themeToggleBtn.textContent = 'Heller Modus';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.classList.remove('dark');
+                themeToggleBtn.textContent = 'Dunkelmodus';
+                localStorage.setItem('theme', 'light');
+            }
+        };
+        const initialTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(initialTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(currentTheme);
+        });
+    </script>
 
-    </div> </body>
+    <script type="module">
+        // Importiert Three.js über die importmap
+        import * as THREE from 'three';
+
+        /**
+         * Erstellt und animiert das 3D-Logo.
+         * @param {string} canvasId - Die ID des Canvas-Elements für das Logo.
+         */
+        function create3DLogo(canvasId) {
+            let logoScene, logoCamera, logoRenderer, ring, vortex, particles = [], clock;
+
+            // Initialisiert die Szene, Kamera, Renderer
+            function init() {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) {
+                    console.error(`Canvas mit ID "${canvasId}" nicht gefunden.`);
+                    return;
+                }
+
+                logoScene = new THREE.Scene();
+
+                // Kamera-Setup (Aspect Ratio wird in resize gesetzt)
+                logoCamera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+                logoCamera.position.z = 15;
+
+                // Renderer-Setup mit transparentem Hintergrund
+                logoRenderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    canvas: canvas,
+                    alpha: true // Transparenz aktivieren
+                });
+                logoRenderer.setClearColor(0x000000, 0); // Vollständig transparent
+                logoRenderer.setPixelRatio(window.devicePixelRatio); // Schärfer auf HiDPI-Displays
+                // Größe initial setzen (wird durch resize angepasst)
+                logoRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+
+                createSceneElements(); // Erstellt die 3D-Objekte
+                setupInteractions();   // Fügt Interaktivität hinzu
+                clock = new THREE.Clock();
+                animate(); // Startet die Animationsschleife
+            }
+
+            // Erstellt die geometrischen Elemente des Logos
+            function createSceneElements() {
+                // Kerr-Ring (äußerer Ring)
+                const ringGeometry = new THREE.TorusGeometry(4, 0.7, 32, 100);
+                // Material mit metallischem Glanz
+                const ringMaterial = new THREE.MeshStandardMaterial({
+                     color: 0x00ff99, // Grünliche Farbe
+                     emissive: 0x00cc77, // Leuchtfarbe
+                     emissiveIntensity: 0.6,
+                     metalness: 0.8,
+                     roughness: 0.3
+                });
+                ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                logoScene.add(ring);
+
+                // 5D-Gateway-Vortex (innerer Kern)
+                const vortexGeometry = new THREE.SphereGeometry(2.5, 32, 32);
+                 // Material mit Wireframe-Optik und Transparenz
+                const vortexMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x0044ff, // Bläuliche Farbe
+                    emissive: 0x0033cc, // Leuchtfarbe
+                    emissiveIntensity: 0.5,
+                    transparent: true,
+                    opacity: 0.4,
+                    wireframe: true
+                });
+                vortex = new THREE.Mesh(vortexGeometry, vortexMaterial);
+                logoScene.add(vortex);
+
+                // Teilchenstrom (kleine Kugeln)
+                const particleGeometry = new THREE.SphereGeometry(0.08, 8, 8); // Kleinere Partikel
+                const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Weiß
+                for (let i = 0; i < 150; i++) { // Anzahl der Partikel
+                    const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+                    // Benutzerdefinierte Daten für die Animation jedes Partikels
+                    particle.userData = {
+                        angle: Math.random() * Math.PI * 2, // Startwinkel
+                        radius: 2 + Math.random() * 1,      // Abstand vom Zentrum
+                        height: -2 + Math.random() * 4,     // Höhe
+                        speed: 0.01 + Math.random() * 0.01   // Geschwindigkeit
+                    };
+                    logoScene.add(particle);
+                    particles.push(particle); // Zur Partikel-Liste hinzufügen
+                }
+
+                // Lichtquellen für die Szene
+                const ambientLight = new THREE.AmbientLight(0x555555); // Grundbeleuchtung
+                const pointLight = new THREE.PointLight(0x00ffaa, 1.5, 30); // Helles Punktlicht
+                pointLight.position.set(7, 7, 7);
+                logoScene.add(ambientLight);
+                logoScene.add(pointLight);
+            }
+
+            // Richtet die Klick-Interaktion ein
+            function setupInteractions() {
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+                const canvas = logoRenderer.domElement;
+
+                // Event-Listener für Klicks auf das Canvas
+                canvas.addEventListener('click', (event) => {
+                    // Mausposition relativ zum Canvas berechnen
+                    const rect = canvas.getBoundingClientRect();
+                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+                    // Raycaster aktualisieren
+                    raycaster.setFromCamera(mouse, logoCamera);
+                    // Prüfen, ob der Vortex geklickt wurde
+                    const intersects = raycaster.intersectObject(vortex);
+
+                    if (intersects.length > 0) {
+                        // Ändert die Farbe des Vortex-Materials bei Klick
+                        vortex.material.color.set(Math.random() * 0xffffff); // Zufällige Farbe
+                        vortex.material.emissive.set(vortex.material.color); // Leuchtfarbe anpassen
+                        console.log("Vortex geklickt!");
+                    }
+                });
+            }
+
+            // Die Hauptanimationsschleife
+            function animate() {
+                requestAnimationFrame(animate); // Nächsten Frame anfordern
+                const t = clock.getElapsedTime(); // Zeit seit Start
+
+                // Pulsation des Vortex (einfache Sinuswelle)
+                const scale = 1 + Math.sin(t * 1.5) * 0.1;
+                vortex.scale.set(scale, scale, scale);
+
+                // Intensität der Leuchtfarbe des Vortex animieren
+                const intensity = 0.5 + Math.abs(Math.sin(t * 1.5)) * 0.5;
+                if (vortex.material.emissiveIntensity !== undefined) {
+                     vortex.material.emissiveIntensity = intensity;
+                }
+                 if (ring.material.emissiveIntensity !== undefined) {
+                     ring.material.emissiveIntensity = 0.6 + Math.abs(Math.sin(t * 0.8)) * 0.4; // Ring auch leicht pulsieren lassen
+                 }
+
+
+                // Rotation von Ring und Vortex
+                ring.rotation.x += 0.005;
+                ring.rotation.y += 0.01;
+                vortex.rotation.y -= 0.002;
+
+                // Bewegung der Partikel
+                particles.forEach(p => {
+                    const userData = p.userData;
+                    userData.angle += userData.speed; // Winkel erhöhen
+                    // Position basierend auf Winkel und Radius neu berechnen
+                    p.position.x = Math.cos(userData.angle) * userData.radius;
+                    p.position.z = Math.sin(userData.angle) * userData.radius;
+                    p.position.y = userData.height + Math.sin(userData.angle * 1.5) * 0.5; // Leichte vertikale Oszillation
+                });
+
+                logoRenderer.render(logoScene, logoCamera); // Szene rendern
+            }
+
+            // Passt die Größe des Renderers und die Kamera an die Canvas-Größe an
+            function resize(width, height) {
+                if (!logoRenderer || !logoCamera) return; // Sicherstellen, dass alles initialisiert ist
+
+                // Kamera-Aspektverhältnis aktualisieren
+                logoCamera.aspect = width / height;
+                logoCamera.updateProjectionMatrix();
+
+                // Renderer-Größe anpassen
+                logoRenderer.setSize(width, height);
+
+                // Neu rendern nach Größenänderung, um Darstellungsfehler zu vermeiden
+                logoRenderer.render(logoScene, logoCamera);
+            }
+
+            // Initialisierung aufrufen
+            init();
+
+            // Gibt die resize-Funktion zurück, damit sie von außen aufgerufen werden kann
+            return {
+                resize,
+                // Optional: Zugriff auf Renderer oder Szene ermöglichen
+                // renderer: logoRenderer,
+                // scene: logoScene
+            };
+        }
+
+        // ----- Logo Initialisierung und Resize Handling -----
+        try {
+            // Das Logo erstellen und initialisieren
+            const logoInstance = create3DLogo('logo-canvas');
+
+            // Funktion zum Anpassen der Logogröße an den Container
+            const handleResize = () => {
+                const container = document.getElementById('logo-container');
+                if (container && logoInstance && logoInstance.resize) {
+                    // Verwende clientWidth/Height, da diese die tatsächliche gerenderte Größe berücksichtigen
+                    logoInstance.resize(container.clientWidth, container.clientHeight);
+                }
+            };
+
+            // Event Listener für Fenstergrößenänderungen hinzufügen
+            window.addEventListener('resize', handleResize);
+
+            // Initiales Anpassen der Größe nach kurzem Timeout (stellt sicher, dass CSS geladen ist)
+            setTimeout(handleResize, 100);
+
+        } catch (error) {
+             console.error("Fehler bei der Initialisierung des 3D-Logos:", error);
+             // Optional: Fallback-Anzeige oder Fehlermeldung im UI
+             const logoContainer = document.getElementById('logo-container');
+             if(logoContainer) {
+                 logoContainer.innerHTML = '<p class="text-red-500 text-xs p-2">Logo Fehler</p>';
+             }
+        }
+
+    </script>
+
+</body>
 </html>
